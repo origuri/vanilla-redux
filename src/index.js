@@ -1,42 +1,32 @@
 import { legacy_createStore } from "redux";
 
-const add = document.getElementById("add");
-const minus = document.getElementById("minus");
-const number = document.querySelector("span");
+const form = document.querySelector("form");
+const input = document.querySelector("input");
+const ul = document.querySelector("ul");
 
-const ADD = "add";
-const MINUS = "minus";
+const ADD_TODO = "ADD_TODO";
+const DELETE_TODO = "DELETE_TODO";
 
-// reducer는 내 데이터를 수정하는 함수
-// count = 0은 count의 초기값이 0이라는 의미
-const countModifyReducer = (count = 0, aciton) => {
-  switch (aciton.type) {
-    case ADD:
-      return count + 1;
-    case MINUS:
-      return count - 1;
+const reducer = (state = [], action) => {
+  switch (action.type) {
+    case ADD_TODO:
+      // 스프레드 연산자로 복사해서 리턴해줘야 함.
+      // 기존의 state에 action.text의 값을 추가하겠다는 의미
+      return [...state, { text: action.text }];
+    case DELETE_TODO:
+      return [];
     default:
-      return count;
+      return state;
   }
 };
+const store = legacy_createStore(reducer);
 
-// store를 사용하기 위해서는 reducer라는 함수가 필요함.
-const countStore = legacy_createStore(countModifyReducer);
-
-const onChange = () => {
-  number.innerText = countStore.getState();
-};
-// action을 감지하고 action이 될 때 마다 안에 함수가 실행됨.
-countStore.subscribe(onChange);
-
-const handleAdd = () => {
-  // dispatch 안에는 오브젝트 타입이 들어가야 함, 반드시 key는 type, value는 string 타입
-  countStore.dispatch({ type: ADD });
+const onSubmit = (e) => {
+  e.preventDefault();
+  const toDo = input.value;
+  input.value = "";
+  // text에 input.value의 값을 넣는다.
+  store.dispatch({ type: ADD_TODO, text: toDo });
 };
 
-const handleMinus = () => {
-  countStore.dispatch({ type: MINUS });
-};
-
-add.addEventListener("click", handleAdd);
-minus.addEventListener("click", handleMinus);
+form.addEventListener("submit", onSubmit);
