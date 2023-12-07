@@ -3,15 +3,15 @@ import { legacy_createStore } from "redux";
 const ADD = "add";
 const DELETE = "delete";
 
-export const addToDo = (text) => {
+const addToDo = (text) => {
   return { type: ADD, text: text, id: Date.now() };
 };
 
-export const deleteToDo = (id) => {
+const deleteToDo = (id) => {
   return { type: DELETE, id: id };
 };
 
-const reducer = (state = [], action) => {
+const reducer = (state = ["현재 state"], action) => {
   switch (action.type) {
     case ADD:
       return [{ text: action.text, id: action.id }, ...state];
@@ -23,5 +23,10 @@ const reducer = (state = [], action) => {
 };
 
 const store = legacy_createStore(reducer);
+
+export const actionCreators = {
+  addToDo,
+  deleteToDo,
+};
 
 export default store;
