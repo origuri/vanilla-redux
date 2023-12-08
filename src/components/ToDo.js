@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { actionCreators } from "../store";
+import { actionCreators, remove } from "../store";
 import { Link } from "react-router-dom";
 
 //                         5
@@ -25,7 +25,7 @@ function mapDispatchToProps(dispatch, ownProps) {
   // store와 마찬가지로 props로 넘어감.
   // 3, 6
   return {
-    onBtnClick: () => dispatch(actionCreators.deleteToDo(ownProps.id)),
+    onBtnClick: () => dispatch(remove(ownProps.id)),
   };
 }
 

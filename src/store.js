@@ -1,5 +1,4 @@
-import { createAction, createReducer } from "@reduxjs/toolkit";
-import { legacy_createStore } from "redux";
+import { configureStore, createSlice } from "@reduxjs/toolkit";
 
 /* const ADD = "add";
 const DELETE = "delete";
@@ -15,16 +14,16 @@ const deleteToDo = (id) => {
 /* const reducer = (state = [], action) => {
   switch (action.type) {
     case addToDo.type: // add
-      return [{ text: action.payload, id: action.id }, ...state];
+    return [{ text: action.payload, id: action.id }, ...state];
     case deleteToDo.type: // delete
-      return state.filter((todo) => action.payload !== todo.id);
+    return state.filter((todo) => action.payload !== todo.id);
     default:
       return state;
-  }
-};
- */
+    }
+  };
+  */
 
-// createAction안에 있는 것 타입
+/* // createAction안에 있는 것 타입
 const addToDo = createAction("ADD");
 const deleteToDo = createAction("DELETE");
 
@@ -43,13 +42,33 @@ const reducer = createReducer([], (bulider) => {
       // filter는 새로운 state이므로
       return state.filter((todo) => action.payload !== todo.id);
     });
-});
-
-const store = legacy_createStore(reducer);
+}); 
 
 export const actionCreators = {
   addToDo,
   deleteToDo,
 };
+
+
+*/
+
+const toDo = createSlice({
+  name: "toDosReducer",
+  initialState: [], // state
+  reducers: {
+    add: (state, action) => {
+      // redux toolkit에서는 추가할 때 얕은 복사 안해도 됨
+      state.push({ text: action.payload, id: Date.now() });
+    },
+    remove: (state, action) => {
+      // filter는 새로운 state이므로
+      return state.filter((todo) => action.payload !== todo.id);
+    },
+  },
+});
+
+const store = configureStore({ reducer: toDo.reducer });
+
+export const { add, remove } = toDo.actions;
 
 export default store;

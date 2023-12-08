@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { actionCreators } from "../store";
+import { actionCreators, add } from "../store";
 import ToDo from "../components/ToDo";
 
 function Home({ toDos, addToDo }) {
@@ -45,7 +45,7 @@ function mapDispatchToProps(dispatch) {
   console.log("dispatch-> ", dispatch);
   // store와 마찬가지로 props로 넘어감.
   return {
-    addToDo: (text) => dispatch(actionCreators.addToDo(text)),
+    addToDo: (text) => dispatch(add(text)),
   };
 }
 
